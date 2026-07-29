@@ -1,16 +1,15 @@
 ﻿*****Clean TXT file*****;
 
 DATA clean_txt_file;
-set work.product;
+set orion.product;
 
 /*Remove brackets*/
 lines = compress(product, '[');
 
-/* Change , to -- */
+/* Identify different product columns*/
 lines= prxchange('s/}\s*,\s*{/|/', -1, lines);
 
-
-/* Fix detail */
+/* Clean different supplier columns */
 array new_lines[5] $200 lines_1-lines_5;
 
 do j  = 1 to 5;
@@ -44,7 +43,8 @@ keep product supplier product_name product_group product_category product_line p
 run;
 
 
-data work.product;
+/*Clean supplier column */
+data orion.product_structured;
 set work.clean_txt_file;
 
 /*Remove brackets*/
@@ -55,6 +55,7 @@ lines= prxchange('s/}\s*,\s*{/|/', -1, lines);
 array new_lines[3] $200 lines_1-lines_3;
 array levels[3] $20 _temporary_ ('Name' 'Country' 'ID');
 
+/* Identify different supplier columns*/
 do j  = 1 to 3;
 	do i = 1 to 3 while (scan(lines, i, '|') ne '');
 		token = compress(compress(scan(lines, i, '|'), "{"), "}");
@@ -64,6 +65,24 @@ do j  = 1 to 3;
 		end;
 	end;
 end;
+
+/* Clean different supplier columns */
+do i = 1 to 3;
+	position = index(new_lines[i], 'id');
+    if position > 0 then do;
+		new_lines[i] = substr(new_lines[i], position);
+		new_lines[i] = strip(compress(substr(substr(new_lines[i], 4, ':"'),2),'"'));
+	end;
+end;
+
+/* Rename to supplier columns */
+supplier_name = lines_1;
+supplier_country = lines_2;
+supplier_id = lines_3;
+
+keep product_name product_group product_category 
+		product_line product_id
+		supplier_name supplier_country supplier_id;
 
 run;
 
