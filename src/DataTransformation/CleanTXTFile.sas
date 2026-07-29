@@ -1,44 +1,44 @@
 ﻿*****Clean TXT file*****;
 
-DATA clean_txt_file;
+data clean_txt_file;
 set orion.product;
 
-/*Remove brackets*/
-lines = compress(product, '[');
+	/*Remove brackets*/
+	lines = compress(product, '[');
 
-/* Identify different product columns*/
-lines= prxchange('s/}\s*,\s*{/|/', -1, lines);
+	/* Identify different product columns*/
+	lines= prxchange('s/}\s*,\s*{/|/', -1, lines);
 
-/* Clean different supplier columns */
-array new_lines[5] $200 lines_1-lines_5;
+	/* Clean different supplier columns */
+	array new_lines[5] $200 lines_1-lines_5;
 
-do j  = 1 to 5;
-	do i = 1 to 5 while (scan(lines, i, '|') ne '');
-		token = scan(lines, i, '|');
-		if prxmatch(cats('/"level"\s*:\s*', j, '/'), token) then do;
-			new_lines[j] = token;
-			leave;
+	do j  = 1 to 5;
+		do i = 1 to 5 while (scan(lines, i, '|') ne '');
+			token = scan(lines, i, '|');
+			if prxmatch(cats('/"level"\s*:\s*', j, '/'), token) then do;
+				new_lines[j] = token;
+				leave;
+			end;
 		end;
 	end;
-end;
 
-/*Find id position */
-do i = 1 to 5;
-	position = index(new_lines[i], 'id');
-    if position > 0 then do;
-		new_lines[i] = substr(new_lines[i], position);
-		new_lines[i] = compress(compress(substr(substr(new_lines[i], 4, '"'), 2), '"'), '}]');
+	/*Find id position */
+	do i = 1 to 5;
+		position = index(new_lines[i], 'id');
+	    if position > 0 then do;
+			new_lines[i] = substr(new_lines[i], position);
+			new_lines[i] = compress(compress(substr(substr(new_lines[i], 4, '"'), 2), '"'), '}]');
 
+		end;
 	end;
-end;
 
-product_name = lines_1;
-product_group = lines_2;
-product_category = lines_3;
-product_line = lines_4;
-product_id = lines_5;
+	product_name = lines_1;
+	product_group = lines_2;
+	product_category = lines_3;
+	product_line = lines_4;
+	product_id = lines_5;
 
-keep product supplier product_name product_group product_category product_line product_id;
+	keep product supplier product_name product_group product_category product_line product_id;
 		
 run;
 
@@ -47,42 +47,42 @@ run;
 data orion.product_structured;
 set work.clean_txt_file;
 
-/*Remove brackets*/
-lines = compress(compress(supplier, '['), ']');
+	/*Remove brackets*/
+	lines = compress(compress(supplier, '['), ']');
 
-lines= prxchange('s/}\s*,\s*{/|/', -1, lines);
+	lines= prxchange('s/}\s*,\s*{/|/', -1, lines);
 
-array new_lines[3] $200 lines_1-lines_3;
-array levels[3] $20 _temporary_ ('Name' 'Country' 'ID');
+	array new_lines[3] $200 lines_1-lines_3;
+	array levels[3] $20 _temporary_ ('Name' 'Country' 'ID');
 
-/* Identify different supplier columns*/
-do j  = 1 to 3;
-	do i = 1 to 3 while (scan(lines, i, '|') ne '');
-		token = compress(compress(scan(lines, i, '|'), "{"), "}");
-		if prxmatch(cats('/"level"\s*:\s*"', levels[j], '"/'), token) then do;
-			new_lines[j] = token;
-			leave;
+	/* Identify different supplier columns*/
+	do j  = 1 to 3;
+		do i = 1 to 3 while (scan(lines, i, '|') ne '');
+			token = compress(compress(scan(lines, i, '|'), "{"), "}");
+			if prxmatch(cats('/"level"\s*:\s*"', levels[j], '"/'), token) then do;
+				new_lines[j] = token;
+				leave;
+			end;
 		end;
 	end;
-end;
 
-/* Clean different supplier columns */
-do i = 1 to 3;
-	position = index(new_lines[i], 'id');
-    if position > 0 then do;
-		new_lines[i] = substr(new_lines[i], position);
-		new_lines[i] = strip(compress(substr(substr(new_lines[i], 4, ':"'),2),'"'));
+	/* Clean different supplier columns */
+	do i = 1 to 3;
+		position = index(new_lines[i], 'id');
+	    if position > 0 then do;
+			new_lines[i] = substr(new_lines[i], position);
+			new_lines[i] = strip(compress(substr(substr(new_lines[i], 4, ':"'),2),'"'));
+		end;
 	end;
-end;
 
-/* Rename to supplier columns */
-supplier_name = lines_1;
-supplier_country = lines_2;
-supplier_id = lines_3;
+	/* Rename to supplier columns */
+	supplier_name = lines_1;
+	supplier_country = lines_2;
+	supplier_id = lines_3;
 
-keep product_name product_group product_category 
-		product_line product_id
-		supplier_name supplier_country supplier_id;
+	keep product_name product_group product_category 
+			product_line product_id
+			supplier_name supplier_country supplier_id;
 
 run;
 
