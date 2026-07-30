@@ -94,20 +94,20 @@ proc sql;
 		customer_gender,
 		customer_name,
 		customer_type,
-		order_date,
-		delivery_date,
-		customer_birthdate,
-		costprice_per_unit,
-		total_retail_price,
-		product_quantity,
-		product_id,
-		product_name,
-		product_group,
-		product_category,
-		product_line,
-		supplier_country,
-		supplier_id,
-		supplier_name
+		input(order_date, date9.) as order_date,
+		input(delivery_date, date9.) as delivery_date,
+		input(customer_birthdate, date9.) as customer_birthdate,
+		input(costprice_per_unit, best.) as costprice_per_unit,
+		input(total_retail_price, best.) as total_retail_price,
+		input(product_quantity, best.) as product_quantity,
+		input(product_id, best.) as product_id,
+		product_name format= $20. as product_name,
+		product_group format= $20. as product_group,
+		product_category format= $20. as product_category,
+		product_line format= $20. as product_line,
+		supplier_country format = $20. as supplier_country,
+		input(supplier_id, best.) as supplier_id,
+		supplier_name format=$20.
 	from orion.orders_product_structured
 	order by order_id, product_id,
 	customer_id,
@@ -117,4 +117,8 @@ proc sql;
 ;
 run;
 
+
+
+proc contents data=orion.order_product_final;
+run;
 
