@@ -89,7 +89,10 @@ proc sql;
 	select order_id,
 		customer_id,
 		employee_id,
-		order_type,
+		case when order_type =1 then "Retail"
+			when order_type=2 then "Catalog"
+			when order_type=3 then "Internet"
+		end as order_type,
 		customer_country,
 		customer_gender,
 		customer_name,
@@ -107,7 +110,25 @@ proc sql;
 		product_line format= $20. as product_line,
 		supplier_country format = $20. as supplier_country,
 		input(supplier_id, best.) as supplier_id,
-		supplier_name format=$20.
+		supplier_name format=$20.,
+		intck('year', input(customer_birthdate, date9.), today(), 'C') as age,
+		case when calculated age between 15 and 30 then "15-30 years old"
+    		when calculated age between 31 and 45 then "31-45 years old"
+    		when calculated age between 46 and 60 then "46-60 years old"
+    		when calculated age between 61 and 75 then "61-75 years old"
+    		when calculated age between 76 and 90 then "76-90 years old"
+   			else "Other"
+			end as age_group,
+		case when index(compress(lowcase(customer_type)), "lowactivity") > 0 then "Low Activity"
+			when index(compress(lowcase(customer_type)), "mediumactivity") > 0 then "Medium Activity"
+			when index(compress(lowcase(customer_type)), "highactivity") > 0 then "High Activity"
+			else "Not Available"
+		end as customer_activity,
+		case when index(compress(customer_type), "OrionClubGold") > 0 then "Orion Club Gold"
+			when index(compress(customer_type), "OrionClub") > 0 then "Orion Club"
+			when index(compress(customer_type), "Internet/CatalogCustomers") > 0 then "Internet/Catalog Customers"
+			else "error"
+		end as customer_type_group
 	from orion.orders_product_structured
 	order by order_id, product_id,
 	customer_id,
@@ -117,8 +138,7 @@ proc sql;
 ;
 run;
 
-
-
+/*Summarize data */
 proc contents data=orion.order_product_final;
 run;
 
