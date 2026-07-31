@@ -80,10 +80,10 @@ set work.org_structured;
 	lines= prxchange('s/}\s*,\s*{/|/', -1, lines);
 
 	/* Clean different org columns */
-	array new_lines[4] $200 lines_1-lines_4;
+	array new_lines[5] $200 lines_1-lines_5;
 
-	do j  = 1 to 4;
-		do i = 1 to 4 while (scan(lines, i, '|') ne '');
+	do j  = 1 to 5;
+		do i = 1 to 5 while (scan(lines, i, '|') ne '');
 			token = scan(lines, i, '|');
 			if prxmatch(cats('/"level"\s*:\s*', j, '/'), token) then do;
 				new_lines[j] = token;
@@ -93,7 +93,7 @@ set work.org_structured;
 	end;
 
 	/*Find id position */
-	do i = 1 to 4;
+	do i = 1 to 5;
 		position = index(new_lines[i], 'id');
 	    if position > 0 then do;
 			new_lines[i] = substr(new_lines[i], position);
@@ -106,8 +106,9 @@ set work.org_structured;
 	second_manager= lines_2;
 	third_manager= lines_3;
 	fourth_manager= lines_4;
+	fifth_manager= lines_5;
 
-	drop manager_hierarchy lines_1 lines_2 lines_3 lines_4 
+	drop manager_hierarchy lines_1 lines_2 lines_3 lines_4 lines_5 
 		lines j i token position;
 
 run;
