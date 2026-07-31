@@ -148,7 +148,13 @@ proc sql;
 		p.second_manager,
 		p.third_manager,
 		p.fourth_manager,
-		p.fifth_manager
+		p.fifth_manager,
+		p.division,
+		p.subdivision,
+		p.department,
+		p.group,
+		p.job_role,
+		p.salary
 	from orion.order_product_final as o
 	left join orion.org_structured as p
 	on o.employee_id = p.employee_id;
@@ -159,11 +165,11 @@ proc sql;
     create table orion.order_product_emp as		
     select 
         o.*,
-        a.employee_name as first_manager_name,
-        b.employee_name as second_manager_name,
-        c.employee_name as third_manager_name,
-        d.employee_name as fourth_manager_name,
-        e.employee_name as fifth_manager_name
+        a.employee_name as direct_manager,
+        b.employee_name as indirect_manager1,
+        c.employee_name as indirect_manager2,
+        d.employee_name as indirect_manager3,
+        e.employee_name as indirect_manager4
 
     from work.order_product_emp as o
 
