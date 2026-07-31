@@ -138,7 +138,19 @@ proc sql;
 ;
 run;
 
+/*Get employee information */
+proc sql;
+	create table orion.order_product_emp (compress = yes) as
+	select o.*,
+		p.employee_name
+	from orion.order_product_final as o
+	left join orion.org_structured as p
+	on o.employee_id = p.employee_id;
+run;
+
 /*Summarize data */
 proc contents data=orion.order_product_final;
 run;
 
+proc contents data=orion.order_product_emp;
+run;
