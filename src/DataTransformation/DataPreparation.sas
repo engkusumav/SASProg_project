@@ -88,7 +88,7 @@ proc sql;
 	create table orion.order_product_final (compress = yes) as
 	select order_id,
 		customer_id,
-		employee_id,
+		strip(put(employee_id, 20.)) as employee_id,
 		case when order_type =1 then "Retail"
 			when order_type=2 then "Catalog"
 			when order_type=3 then "Internet"
@@ -141,13 +141,49 @@ run;
 
 /*Get employee information */
 proc sql;
-	create table orion.order_product_emp (compress = yes) as
+	create table work.order_product_emp (compress = yes) as
 	select o.*,
-		p.employee_name
+		p.employee_name,
+		p.first_manager,
+		p.second_manager,
+		p.third_manager,
+		p.fourth_manager,
+		p.fifth_manager
 	from orion.order_product_final as o
 	left join orion.org_structured as p
 	on o.employee_id = p.employee_id;
 run;
+
+/*Self join for manager information */
+proc sql;
+    create table orion.order_product_emp as		
+    select 
+        o.*,
+        a.employee_name as first_manager_name,
+        b.employee_name as second_manager_name,
+        c.employee_name as third_manager_name,
+        d.employee_name as fourth_manager_name,
+        e.employee_name as fifth_manager_name
+
+    from work.order_product_emp as o
+
+    left join orion.org_structured as a
+        on o.first_manager = a.employee_id
+
+    left join orion.org_structured as b
+        on o.second_manager = b.employee_id
+
+    left join orion.org_structured as c
+        on o.third_manager = c.employee_id
+
+    left join orion.org_structured as d
+        on o.fourth_manager = d.employee_id
+
+    left join orion.org_structured as e
+        on o.fifth_manager = e.employee_id;
+
+run;
+
 
 /*Summarize data */
 proc contents data=orion.order_product_final;

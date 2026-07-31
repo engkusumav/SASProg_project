@@ -108,7 +108,11 @@ set work.org_structured;
 	fourth_manager= lines_4;
 	fifth_manager= lines_5;
 
-	drop manager_hierarchy lines_1 lines_2 lines_3 lines_4 lines_5 
-		lines j i token position;
+	employee_id_char= strip(put(employee_id, 20.));
 
+	drop manager_hierarchy lines_1 lines_2 lines_3 lines_4 lines_5 
+		lines j i token position employee_id;
+
+    rename employee_id_char= employee_id;
+	
 run;
