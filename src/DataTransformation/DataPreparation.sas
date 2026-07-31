@@ -128,7 +128,8 @@ proc sql;
 			when index(compress(customer_type), "OrionClub") > 0 then "Orion Club"
 			when index(compress(customer_type), "Internet/CatalogCustomers") > 0 then "Internet/Catalog Customers"
 			else "error"
-		end as customer_type_group
+		end as customer_type_group,
+		calculated total_retail_price - (calculated costprice_per_unit * calculated product_quantity) as profit
 	from orion.orders_product_structured
 	order by order_id, product_id,
 	customer_id,
