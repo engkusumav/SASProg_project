@@ -138,7 +138,7 @@ proc sql;
 quit;
 
 ***********Report Generation***********;
-ods pdf file="product_report.pdf" style=journal;
+ods pdf file="/home/student/casuser/product_report.pdf" style=journal;
 footnote "Session started: &SYSDATE9 &SYSTIME | User: &SYSUSERID";
 
 title1 "Most frequently purchased product line";

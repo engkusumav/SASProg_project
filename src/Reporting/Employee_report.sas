@@ -47,7 +47,7 @@ create table orion.top5_sellers as
 run;
 
 ***********Report Generation***********;
-ods pdf file="Employee_report.pdf" style=journal;
+ods pdf file="/home/student/casuser/Employee_report.pdf" style=journal;
 footnote "Session started: &SYSDATE9 &SYSTIME | User: &SYSUSERID";
 
 title1 "Top 5 sellers";
@@ -73,4 +73,7 @@ proc report data=orion.top5_sellers nowd;
 run;
 
 ods pdf close;
+
+%put &=sysuserid;
+%put %sysfunc(pathname(work));
 

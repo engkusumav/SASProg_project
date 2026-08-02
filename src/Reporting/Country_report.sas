@@ -87,7 +87,8 @@ quit;
 %end;
 
 ***********Report Generation***********;
-ods pdf file="country_report.pdf" style=journal;
+options orientation=landscape;
+ods pdf file="/home/student/casuser/country_report.pdf" style=journal;
 footnote "Session started: &SYSDATE9 &SYSTIME | User: &SYSUSERID";
 
 /*Remove , for reporting purpose */
@@ -133,3 +134,6 @@ ods pdf close;
 
 %third_report( type = product, input_country =%str('AU','US'));
 
+
+%put &=sysuserid;
+%put %sysfunc(pathname(work));

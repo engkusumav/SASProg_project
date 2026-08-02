@@ -53,7 +53,7 @@
 	%end;
 
 	***********Report Generation***********;
-	ods pdf file="order_report.pdf" style=journal;
+	ods pdf file="/home/student/casuser/order_report.pdf" style=journal;
 	footnote "Session started: &SYSDATE9 &SYSTIME | User: &SYSUSERID";
 	/* Make sure the title is displayed with , and */
 	%if %sysfunc(countw(%superq(user_input),%str(,))) = 2 %then %do;
