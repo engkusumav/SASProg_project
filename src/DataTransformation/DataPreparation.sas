@@ -1,4 +1,6 @@
-﻿*****Data Preparation*****;
+﻿/*-------------------------------------*/
+/*			Data Preparation		   */
+/*-------------------------------------*/
 
 /* Join table between order left join to the product */
 proc sql;

@@ -1,4 +1,6 @@
-﻿*****Clean Excel file****;
+﻿/*-------------------------------------*/
+/*			Clean Excel file		   */
+/*-------------------------------------*/
 
 data orion.orders_structured;
 set orion.orders;

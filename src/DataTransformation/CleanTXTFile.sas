@@ -1,4 +1,6 @@
-﻿*****Clean TXT file*****;
+﻿/*-------------------------------------*/
+/*			Clean TXT file		   */
+/*-------------------------------------*/
 
 data clean_txt_file;
 set orion.product;

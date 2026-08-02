@@ -1,4 +1,6 @@
-﻿*****4.3.Reporting*****;
+﻿/*-------------------------------------*/
+/* 		     Product Report 		   */
+/*-------------------------------------*/
 
 *What is the most frequently purchased product line?;
 proc sql;
@@ -71,7 +73,6 @@ proc sql;
     order by age_group;
 quit;
 
-
 *What is the most frequently purchased product line by customer type? ;
 proc sql;
     create table orion.most_frequent_customer_type as
@@ -103,7 +104,6 @@ proc sql;
     having frequency = max(frequency)
     order by customer_activity;
 quit;
-
 
 *What is the most frequently purchased product line by supplier name? ;
 proc sql;

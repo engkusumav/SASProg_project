@@ -1,4 +1,6 @@
-﻿****Third report*****;
+﻿/*-------------------------------------*/
+/* 		      Country Report 		   */
+/*-------------------------------------*/
 
 %macro third_report(type, input_country);
 
@@ -62,6 +64,7 @@ quit;
     %return;
 %end;
 
+/* if no country input no need to filter */
 %if %length(&input_country) = 0 %then %do;
 	proc sql;
 		create table orion.country_report as

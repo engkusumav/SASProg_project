@@ -1,4 +1,6 @@
-﻿****Machine Learning data split **********;
+﻿/*-------------------------------------*/
+/* 		Machine Learning Data Split    */
+/*-------------------------------------*/
 
 %macro sampling(type);
 
@@ -36,9 +38,9 @@
 
 		    drop value;
 		run;
-
 %end;
 
+/*Cluster Sampling*/
 %else %if %upcase(&type)= "CLUSTER" %then %do;
 	/*Cluster Sampling*/
 	%let column_cluster = Customer_Country;
@@ -66,7 +68,7 @@
 
 %mend;
 
-
+/*Please select the sampling type here*/
 %sampling(type="Stratified")
 
 
