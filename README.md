@@ -10,18 +10,18 @@ A SAS data pipeline that ingests raw sales, organisation, and product data, tran
 myproj/
 ├── src/
 │   ├── CreateSASTable/
-│   │   └── DataAccess_41.sas        # Import raw source files into SAS library
+│   │   └── DataAccess.sas        # Import raw source files into SAS library
 │   ├── DataTransformation/
 │   │   ├── CleanExcelFile.sas       # Parse nested JSON fields in orders and org tables
 │   │   ├── CleanTXTFile.sas         # Parse nested JSON fields in product and supplier table
 │   │   ├── DataExploration.sas      # Data quality checks (missing, outliers, duplicates)
 │   │   └── DataPreparation.sas      # Join, validate, enrich, and finalise tables
 │   └── Reporting/
-│       ├── first_report.sas         # Most frequently purchased product line
-│       ├── second_report.sas
-│       ├── third_report.sas
-│       └── fourth_report.sas
-└── report_output/
+│       ├── Country_report.sas         # Filtered order report by country and view type
+│       ├── Employee_report.sas        # Top 5 sellers employee with their managers information
+│       ├── Order_report.sas           # Order detail by product category
+│       └── Product_report.sas         # Product frequency within each by group
+└── report_output/  
     └── product_report.pdf           # Final PDF report
 ```
 
@@ -70,15 +70,18 @@ Runs PROC SQL aggregations and generates a PDF report (`product_report.pdf`) usi
 
 ## How to Run
 
-1. Update the `libname` path in `DataAccess_41.sas` to point to your SAS library
+1. Update the `libname` path in `DataAccess.sas` to point to your SAS library
 2. Update source file paths to match your environment
 3. Run scripts in order:
-   1. `CreateSASTable/DataAccess_41.sas`
+   1. `CreateSASTable/DataAccess.sas`
    2. `DataTransformation/CleanExcelFile.sas`
    3. `DataTransformation/CleanTXTFile.sas`
    4. `DataTransformation/DataExploration.sas` *(optional — for QA)*
    5. `DataTransformation/DataPreparation.sas`
-   6. `Reporting/first_report.sas` *(and subsequent report files)*
+   6. `Reporting/Country_report.sas` 
+   7. `Reporting/Employee_report.sas` 
+   8. `Reporting/Order_report.sas` 
+   9. `Reporting/Product_Report.sas` 
 
 ---
 
