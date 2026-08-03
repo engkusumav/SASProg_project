@@ -3,27 +3,34 @@
 /*-------------------------------------*/
 
 data orion.orders_structured;
-set orion.orders;
+    set orion.orders;
 
-	/*Remove brackets*/
-	lines = compress(order_details, '[]');
+    /* Remove outer brackets */
+    lines = compress(order_details, '[]');
 
-	/* Identify different product columns */
-	array new_lines[8] $200 lines_1-lines_8;
+    /* Count the number of comma-separated pieces */
+    n = countw(lines, ',');
 
-	do j  = 1 to 8;
-		new_lines[j]= compress(scan(scan(lines, j, ','), 2, ':'), '"}');
-	end;
+    /* Create a large enough array */
+    array new_lines[100] $200 lines_1-lines_100;
 
-	product_id= lines_2;
-	product_quantity= lines_4;
-	costprice_per_unit= lines_6;
-	total_retail_price=lines_8;
+    /* Parse each key/value */
+    do j = 1 to n;
+        new_lines[j] = compress(scan(scan(lines, j, ','), 2, ':'), '"}');
+    end;
 
-	drop lines_1 lines_3 lines_5 lines_7 
-			lines_2 lines_4 lines_6 lines_8
-			order_details j lines;
+    /* Output one observation per product */
+    do i = 2 to n by 8;
 
+        product_id          = new_lines[i];
+        product_quantity    = input(new_lines[i+2], best.);
+        costprice_per_unit  = input(new_lines[i+4], best.);
+        total_retail_price  = input(new_lines[i+6], best.);
+
+        output;
+    end;
+
+    drop lines lines_: i j n order_details;
 run;
 
 

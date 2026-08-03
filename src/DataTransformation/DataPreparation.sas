@@ -102,9 +102,9 @@ proc sql;
 		input(order_date, date9.) as order_date,
 		input(delivery_date, date9.) as delivery_date,
 		input(customer_birthdate, date9.) as customer_birthdate,
-		input(costprice_per_unit, best.) as costprice_per_unit,
-		input(total_retail_price, best.) as total_retail_price,
-		input(product_quantity, best.) as product_quantity,
+		costprice_per_unit,
+		total_retail_price,
+		product_quantity,
 		input(product_id, best.) as product_id,
 		product_name format= $20. as product_name,
 		product_group format= $20. as product_group,
@@ -131,7 +131,7 @@ proc sql;
 			when index(compress(customer_type), "Internet/CatalogCustomers") > 0 then "Internet/Catalog Customers"
 			else "error"
 		end as customer_type_group,
-		calculated total_retail_price - (calculated costprice_per_unit * calculated product_quantity) as profit
+		total_retail_price - (costprice_per_unit * product_quantity) as profit
 	from orion.orders_product_structured
 	order by order_id, product_id,
 	customer_id,
