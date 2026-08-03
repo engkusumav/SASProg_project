@@ -1,4 +1,6 @@
-﻿*****4.1.Create SAS Tables from Source Files *****;
+﻿/*-------------------------------------*/
+/* 		      Data Access 		       */
+/*-------------------------------------*/
 
 /*Initiate the library */
 libname orion "/home/student/casuser";
