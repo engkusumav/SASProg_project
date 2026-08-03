@@ -7,22 +7,49 @@ A SAS data pipeline that ingests raw sales, organisation, and product data, tran
 ## Project Structure
 
 ```
-myproj/
+SASProg/
+├── data/
+│   ├── orders.xlsx
+│   ├── organization.csv
+│   ├── products.txt
+│   └── product_level.xlsx
 ├── src/
 │   ├── CreateSASTable/
-│   │   └── DataAccess.sas        # Import raw source files into SAS library
+│   │   └── DataAccess.sas              # Import raw source files into SAS library
 │   ├── DataTransformation/
-│   │   ├── CleanExcelFile.sas       # Parse nested JSON fields in orders and org tables
-│   │   ├── CleanTXTFile.sas         # Parse nested JSON fields in product and supplier table
-│   │   ├── DataExploration.sas      # Data quality checks (missing, outliers, duplicates)
-│   │   └── DataPreparation.sas      # Join, validate, enrich, and finalise tables
-│   └── Reporting/
-│       ├── Country_report.sas         # Filtered order report by country and view type
-│       ├── Employee_report.sas        # Top 5 sellers employee with their managers information
-│       ├── Order_report.sas           # Order detail by product category
-│       └── Product_report.sas         # Product frequency within each by group
-└── report_output/  
-    └── product_report.pdf           # Final PDF report
+│   │   ├── CleanExcelFile.sas          # Parse nested JSON in orders and org tables
+│   │   ├── CleanTXTFile.sas            # Parse nested JSON in product and supplier table
+│   │   ├── DataExploration.sas         # Data quality checks (missing, outliers, duplicates)
+│   │   └── DataPreparation.sas         # Join, validate, enrich, and finalise tables
+│   ├── Reporting/
+│   │   ├── Product_report.sas          # Product frequency analysis
+│   │   ├── Order_report.sas            # Order detail filtered by product category
+│   │   ├── Country_report.sas          # Order report filtered by country and view type
+│   │   └── Employee_report.sas         # Top 5 sellers by profit with manager hierarchy
+│   └── Research/
+│       └── ML_prepsas.sas              # Machine learning data split (SRS, Stratified, Cluster)
+├── output/                             # Exported CSV tables from orion library
+│   ├── table_ORDER_PRODUCT_FINAL.csv
+│   ├── table_ORDER_PRODUCT_EMP.csv
+│   ├── table_ORDERS_PRODUCT_INCORRECT.csv
+│   ├── table_FREQUENT_PRODUCT_LINE.csv
+│   ├── table_FREQUENT_TOP_10.csv
+│   ├── table_FREQUENT_COUNTRY_FINAL.csv
+│   ├── table_FREQUENT_ORDER_TYPE.csv
+│   ├── table_MOST_FREQUENT_AGE_GROUP.csv
+│   ├── table_MOST_FREQUENT_CUSTOMER_TYPE.csv
+│   ├── table_MOST_FREQUENT_CUST_ACTIVITY.csv
+│   ├── table_MOST_FREQUENT_SUPPLIER_NAME.csv
+│   ├── table_MOST_FREQUENT_SUPPLIER_COUNTRY.csv
+│   ├── table_COUNTRY_REPORT.csv
+│   ├── table_USER_INPUTUCT.csv
+│   ├── table_TOP5_SELLERS.csv
+│   └── table_FIRST_PRODUCT.csv
+└── report_output/
+    ├── product_report.pdf
+    ├── order_report.pdf
+    ├── country_report.pdf
+    └── employee_report.pdf
 ```
 
 ---
